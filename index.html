@@ -279,11 +279,11 @@
     .cta p { margin: 0; color: var(--muted); font-size: 16px; }
 
     .quote-dialog {
-      width: min(1120px, calc(100% - 32px));
+      width: min(760px, calc(100% - 32px));
       max-width: none;
-      max-height: min(92vh, 1000px);
+      max-height: min(92vh, 900px);
       padding: 0;
-      overflow: auto;
+      overflow: hidden;
       border: 0;
       border-radius: 7px;
       color: var(--ink);
@@ -292,7 +292,7 @@
     }
 
     .quote-dialog::backdrop { background: rgba(7, 19, 31, .72); }
-    .quote-dialog__inner { padding: 32px; }
+    .quote-dialog__inner { padding: 26px; }
 
     .quote-dialog__top {
       display: flex;
@@ -321,6 +321,101 @@
     }
 
     .quote-close:hover { background: var(--paper); }
+
+    .gift-chat {
+      display: flex;
+      height: min(62vh, 620px);
+      min-height: 430px;
+      flex-direction: column;
+      overflow: hidden;
+      border: 1px solid var(--line);
+      border-radius: 7px;
+      background: #f7f9fa;
+    }
+    .gift-chat__messages {
+      display: flex;
+      flex: 1;
+      flex-direction: column;
+      gap: 14px;
+      overflow-y: auto;
+      padding: 20px;
+      scroll-behavior: smooth;
+    }
+    .gift-chat__row { display: flex; align-items: flex-end; gap: 9px; }
+    .gift-chat__row--user { justify-content: flex-end; }
+    .gift-chat__avatar {
+      display: grid;
+      width: 30px;
+      height: 30px;
+      flex: 0 0 auto;
+      place-items: center;
+      border-radius: 50%;
+      color: var(--navy);
+      background: var(--amber);
+      font-size: 14px;
+      font-weight: 800;
+    }
+    .gift-chat__bubble {
+      max-width: min(82%, 540px);
+      padding: 11px 14px;
+      border: 1px solid var(--line);
+      border-radius: 12px 12px 12px 3px;
+      color: var(--ink);
+      background: white;
+      overflow-wrap: anywhere;
+      white-space: pre-wrap;
+    }
+    .gift-chat__row--user .gift-chat__bubble {
+      border-color: var(--navy);
+      border-radius: 12px 12px 3px 12px;
+      color: white;
+      background: var(--navy);
+    }
+    .gift-chat__quick-replies {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-left: 39px;
+    }
+    .gift-chat__quick-replies button {
+      min-height: 38px;
+      padding: 8px 12px;
+      border: 1px solid #b9c9d6;
+      border-radius: 20px;
+      color: var(--navy);
+      background: white;
+      font: inherit;
+      font-size: 13px;
+      font-weight: 650;
+      cursor: pointer;
+    }
+    .gift-chat__quick-replies button:hover,
+    .gift-chat__quick-replies button:focus-visible {
+      border-color: var(--amber);
+      background: #fff7eb;
+    }
+    .gift-chat__status { min-height: 20px; padding: 0 20px; color: var(--muted); font-size: 12px; }
+    .gift-chat__form {
+      display: flex;
+      gap: 10px;
+      padding: 13px;
+      border-top: 1px solid var(--line);
+      background: white;
+    }
+    .gift-chat__input {
+      min-width: 0;
+      min-height: 46px;
+      flex: 1;
+      padding: 10px 12px;
+      border: 1px solid #cbd5df;
+      border-radius: 5px;
+      color: var(--ink);
+      font: inherit;
+    }
+    .gift-chat__input:focus { outline: 3px solid rgba(36,91,131,.13); border-color: var(--blue); }
+    .gift-chat__send { min-width: 86px; border: 0; cursor: pointer; }
+    .gift-chat__send:disabled, .gift-chat__input:disabled { opacity: .6; cursor: wait; }
+    .sr-only { position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip: rect(0, 0, 0, 0); white-space: nowrap; border: 0; }
     .quote-layout { display: grid; grid-template-columns: minmax(0, 1fr) 310px; gap: 48px; align-items: start; }
     .quote-title { margin: 0 0 28px; color: var(--navy); font-size: 30px; letter-spacing: -.025em; }
     .quote-group-title { margin: 0 0 18px; color: var(--navy); font-size: 19px; }
@@ -454,7 +549,11 @@
       .step b { margin: 0; }
       .cta__inner { align-items: flex-start; flex-direction: column; }
       .footer__grid { gap: 28px 20px; }
-      .quote-dialog__inner { padding: 22px 18px; }
+      .quote-dialog__inner { padding: 18px 14px; }
+      .gift-chat { height: min(70vh, 620px); min-height: 390px; }
+      .gift-chat__messages { padding: 14px; }
+      .gift-chat__form { padding: 10px; }
+      .gift-chat__send { min-width: 70px; padding-inline: 12px; }
       .quote-dialog__top { margin-bottom: 22px; }
       .quote-layout { grid-template-columns: 1fr; gap: 26px; }
       .quote-aside { order: -1; }
@@ -758,117 +857,33 @@
       <div class="quote-dialog__inner">
         <div class="quote-dialog__top">
           <div>
-            <p class="eyebrow">Request a quote</p>
-            <h2 class="quote-title" id="quote-dialog-title">Tell us about your shipment.</h2>
+            <p class="eyebrow">Chat with us</p>
+            <h2 class="quote-title" id="quote-dialog-title">Gift · ARNGIF quote assistant</h2>
           </div>
-          <button class="quote-close" id="close-quote" type="button" aria-label="Close quote form">&times;</button>
+          <button class="quote-close" id="close-quote" type="button" aria-label="Close chat">&times;</button>
         </div>
 
-        <div class="container quote-layout">
-          <div>
-            <div id="quote-entry">
-              <form id="quote-form">
-                <div class="quote-form__section">
-                  <h3 class="quote-group-title">Your details</h3>
-                  <div class="quote-fields">
-                    <div class="quote-field">
-                      <label for="quote-name">Full name *</label>
-                      <input id="quote-name" name="fullName" autocomplete="name" required>
-                    </div>
-                    <div class="quote-field">
-                      <label for="quote-company">Company name <span>(optional)</span></label>
-                      <input id="quote-company" name="company" autocomplete="organization">
-                    </div>
-                    <div class="quote-field">
-                      <label for="quote-phone">Phone or WhatsApp *</label>
-                      <input id="quote-phone" name="phone" type="tel" autocomplete="tel" placeholder="+263 ..." required>
-                    </div>
-                    <div class="quote-field">
-                      <label for="quote-email">Email address <span>(optional)</span></label>
-                      <input id="quote-email" name="email" type="email" autocomplete="email">
-                    </div>
-                  </div>
-                </div>
-
-                <div class="quote-form__section">
-                  <h3 class="quote-group-title">Shipment</h3>
-                  <div class="quote-fields">
-                    <div class="quote-field quote-field--full">
-                      <label for="quote-service">Type of enquiry *</label>
-                      <select id="quote-service" name="service" required>
-                        <option value="">Select...</option>
-                        <option>Road Transport</option>
-                        <option>Customs Clearance</option>
-                        <option>Sea Freight</option>
-                        <option>Air Freight</option>
-                        <option>Door-to-Door</option>
-                        <option>Other</option>
-                      </select>
-                    </div>
-
-                    <div class="quote-field">
-                      <label for="quote-origin">Collection location *</label>
-                      <input id="quote-origin" name="origin" required>
-                    </div>
-                    <div class="quote-field">
-                      <label for="quote-destination">Delivery destination *</label>
-                      <input id="quote-destination" name="destination" required>
-                    </div>
-                    <div class="quote-field quote-field--full">
-                      <label for="quote-cargo">Cargo description *</label>
-                      <textarea id="quote-cargo" name="cargo" required></textarea>
-                    </div>
-                    <div class="quote-field">
-                      <label for="quote-weight">Estimated weight <span>(optional)</span></label>
-                      <input id="quote-weight" name="weight" placeholder="e.g. 28 tonnes">
-                    </div>
-                    <div class="quote-field">
-                      <label for="quote-dimensions">Dimensions or volume <span>(optional)</span></label>
-                      <input id="quote-dimensions" name="dimensions">
-                    </div>
-                    <div class="quote-field">
-                      <label for="quote-date">Preferred collection date <span>(optional)</span></label>
-                      <input id="quote-date" name="date" type="date">
-                    </div>
-                    <div class="quote-field">
-                      <label for="quote-truck">Truck / transport requirements <span>(optional)</span></label>
-                      <input id="quote-truck" name="truck" placeholder="e.g. tautliner, flatbed">
-                    </div>
-                    <div class="quote-field quote-field--full">
-                      <label for="quote-instructions">Additional instructions <span>(optional)</span></label>
-                      <textarea id="quote-instructions" name="instructions"></textarea>
-                    </div>
-                  </div>
-                </div>
-
-                <p class="quote-note">
-                  Have documents to share? Attach them when you send your message on WhatsApp or email.
-                  Your details are only placed in a draft message; this page does not store or submit them.
-                </p>
-                <button class="button button--amber quote-form__submit" type="submit">Review my enquiry</button>
-              </form>
+        <div class="gift-chat" id="gift-chat">
+          <div class="gift-chat__messages" id="gift-messages" role="log" aria-live="polite" aria-relevant="additions text">
+            <div class="gift-chat__row gift-chat__row--bot">
+              <span class="gift-chat__avatar" aria-hidden="true">G</span>
+              <div class="gift-chat__bubble">Hi, I’m Gift, ARNGIF’s quote assistant. What service can I help you with? Choose one below, or type your question.</div>
             </div>
-
-            <div class="quote-review" id="quote-review" aria-live="polite" hidden>
-              <h3>Review your enquiry</h3>
-              <div class="review-summary" id="review-summary"></div>
-              <div class="quote-review__actions">
-                <button class="button button--outline" id="edit-enquiry" type="button" style="color:var(--navy);border-color:var(--line);background:white">Edit enquiry</button>
-                <button class="button button--amber" id="send-whatsapp" type="button">Send on WhatsApp</button>
-                <button class="button" id="send-email" type="button" style="color:white;background:var(--navy)">Send by email</button>
-              </div>
+            <div class="gift-chat__quick-replies" id="gift-services" role="group" aria-label="Choose a service">
+              <button type="button" data-service="Road Transport">Road Transport</button>
+              <button type="button" data-service="Customs Clearance">Customs Clearance</button>
+              <button type="button" data-service="Sea Freight">Sea Freight</button>
+              <button type="button" data-service="Air Freight">Air Freight</button>
+              <button type="button" data-service="Door-to-Door">Door-to-Door</button>
+              <button type="button" data-service="Other">Other</button>
             </div>
           </div>
-
-          <aside class="quote-aside">
-            <h3>What happens next</h3>
-            <ol>
-              <li>Send us your enquiry on WhatsApp or email.</li>
-              <li>We review the route, cargo and requirements.</li>
-              <li>You receive a quotation and confirm arrangements.</li>
-            </ol>
-            <address>Goodrington Drive, Bluffhill, Harare, Zimbabwe</address>
-          </aside>
+          <p class="gift-chat__status" id="gift-status" role="status" aria-live="polite"></p>
+          <form class="gift-chat__form" id="gift-form">
+            <label class="sr-only" for="gift-input">Message Gift</label>
+            <input class="gift-chat__input" id="gift-input" name="message" type="text" placeholder="Type your message to Gift…" autocomplete="off" required>
+            <button class="button button--amber gift-chat__send" id="gift-send" type="submit">Send</button>
+          </form>
         </div>
       </div>
     </dialog>
@@ -958,89 +973,110 @@
       if (event.target === quoteDialog) quoteDialog.close();
     });
 
-    const quoteForm = document.querySelector('#quote-form');
-    const quoteEntry = document.querySelector('#quote-entry');
-    const quoteReview = document.querySelector('#quote-review');
-    const reviewSummary = document.querySelector('#review-summary');
-
-    const quoteLabels = {
-      fullName: 'Full name',
-      company: 'Company',
-      phone: 'Phone / WhatsApp',
-      email: 'Email',
-      service: 'Type of enquiry',
-      origin: 'Collection location',
-      destination: 'Delivery destination',
-      cargo: 'Cargo description',
-      weight: 'Estimated weight',
-      dimensions: 'Dimensions / volume',
-      date: 'Preferred collection date',
-      truck: 'Transport requirements',
-      instructions: 'Additional instructions'
-    };
-
-    function quoteMessage() {
-      const data = new FormData(quoteForm);
-      const lines = [
-        'Hello ARNGIF Holdings, I would like to request a quotation.',
-        ''
-      ];
-
-      for (const [key, label] of Object.entries(quoteLabels)) {
-        const value = String(data.get(key) || '').trim();
-        if (value) lines.push(`${label}: ${value}`);
-      }
-
-      return lines.join('\n');
+    const giftForm = document.querySelector('#gift-form');
+    const giftInput = document.querySelector('#gift-input');
+    const giftSend = document.querySelector('#gift-send');
+    const giftMessages = document.querySelector('#gift-messages');
+    const giftStatus = document.querySelector('#gift-status');
+    const giftServices = document.querySelector('#gift-services');
+    const n8nChatUrl = 'https://promisedexterkaparadza.app.n8n.cloud/webhook/4c4182d5-7669-4189-b21c-b71bc424dbc5/chat?action=sendMessage';
+    const giftSessionStorageKey = 'arngif-gift-chat-session';
+    let giftSessionId = sessionStorage.getItem(giftSessionStorageKey);
+    if (!giftSessionId) {
+      giftSessionId = window.crypto && typeof window.crypto.randomUUID === 'function'
+        ? window.crypto.randomUUID()
+        : `arngif-${Date.now()}-${Math.random().toString(36).slice(2)}`;
+      sessionStorage.setItem(giftSessionStorageKey, giftSessionId);
     }
 
-    quoteForm.addEventListener('submit', event => {
-      event.preventDefault();
-
-      if (!quoteForm.reportValidity()) return;
-
-      const data = new FormData(quoteForm);
-      reviewSummary.replaceChildren();
-
-      for (const [key, label] of Object.entries(quoteLabels)) {
-        const value = String(data.get(key) || '').trim();
-        if (!value) continue;
-
-        const row = document.createElement('div');
-        row.className = 'review-row';
-
-        const heading = document.createElement('strong');
-        heading.textContent = label;
-
-        const detail = document.createElement('span');
-        detail.textContent = value;
-
-        row.append(heading, detail);
-        reviewSummary.append(row);
+    function addGiftMessage(sender, message) {
+      const row = document.createElement('div');
+      row.className = `gift-chat__row gift-chat__row--${sender}`;
+      if (sender === 'bot') {
+        const avatar = document.createElement('span');
+        avatar.className = 'gift-chat__avatar';
+        avatar.setAttribute('aria-hidden', 'true');
+        avatar.textContent = 'G';
+        row.append(avatar);
       }
+      const bubble = document.createElement('div');
+      bubble.className = 'gift-chat__bubble';
+      bubble.textContent = message;
+      row.append(bubble);
+      giftMessages.append(row);
+      giftMessages.scrollTop = giftMessages.scrollHeight;
+    }
 
-      quoteEntry.hidden = true;
-      quoteReview.hidden = false;
-      quoteReview.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+    function findReply(value) {
+      if (typeof value === 'string') return value.trim();
+      if (Array.isArray(value)) {
+        for (const item of value) {
+          const reply = findReply(item);
+          if (reply) return reply;
+        }
+        return '';
+      }
+      if (value && typeof value === 'object') {
+        for (const key of ['output', 'text', 'response', 'reply', 'message', 'data']) {
+          if (key in value) {
+            const reply = findReply(value[key]);
+            if (reply) return reply;
+          }
+        }
+      }
+      return '';
+    }
+
+    async function sendToGift(message) {
+      addGiftMessage('user', message);
+      giftInput.disabled = true;
+      giftSend.disabled = true;
+      giftServices.querySelectorAll('button').forEach(button => button.disabled = true);
+      giftStatus.textContent = 'Gift is replying…';
+
+      try {
+        const response = await fetch(n8nChatUrl, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ action: 'sendMessage', sessionId: giftSessionId, chatInput: message })
+        });
+        const responseBody = await response.text();
+        let responseData;
+        try { responseData = JSON.parse(responseBody); }
+        catch { responseData = responseBody; }
+        if (!response.ok) throw new Error(`Chat service returned ${response.status}`);
+        const reply = findReply(responseData);
+        if (!reply) throw new Error('The chat service returned an empty reply');
+        addGiftMessage('bot', reply);
+        giftStatus.textContent = '';
+      } catch (error) {
+        giftStatus.textContent = 'Gift could not connect just now. Please check your connection and send your message again.';
+      } finally {
+        giftInput.disabled = false;
+        giftSend.disabled = false;
+        giftInput.focus();
+      }
+    }
+
+    giftForm.addEventListener('submit', event => {
+      event.preventDefault();
+      const message = giftInput.value.trim();
+      if (!message || giftSend.disabled) return;
+      giftInput.value = '';
+      giftServices.hidden = true;
+      sendToGift(message);
     });
 
-    document.querySelector('#edit-enquiry').addEventListener('click', () => {
-      quoteReview.hidden = true;
-      quoteEntry.hidden = false;
-      quoteEntry.scrollIntoView({ behavior: 'smooth', block: 'start' });
-    });
-
-    document.querySelector('#send-whatsapp').addEventListener('click', () => {
-      const url = `https://wa.me/263776768932?text=${encodeURIComponent(quoteMessage())}`;
-      window.open(url, '_blank', 'noopener,noreferrer');
-    });
-
-    document.querySelector('#send-email').addEventListener('click', () => {
-      const data = new FormData(quoteForm);
-      const subject = encodeURIComponent(`Quote request: ${data.get('service')}`);
-      const body = encodeURIComponent(quoteMessage());
-
-      window.location.href = `mailto:promisedexterkaparadza@gmail.com?subject=${subject}&body=${body}`;
+    giftServices.querySelectorAll('[data-service]').forEach(button => {
+      button.addEventListener('click', () => {
+        if (button.disabled) return;
+        const service = button.dataset.service;
+        const message = service === 'Other'
+          ? 'I need help with another service that is not listed. Please ask me what I need.'
+          : `I would like a quote for ${service}.`;
+        giftServices.hidden = true;
+        sendToGift(message);
+      });
     });
 
     document.querySelector('#year').textContent = new Date().getFullYear();
